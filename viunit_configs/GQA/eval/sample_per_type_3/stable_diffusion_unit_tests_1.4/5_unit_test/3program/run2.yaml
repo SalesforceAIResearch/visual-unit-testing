@@ -1,0 +1,136 @@
+#  Copyright (c) 2024, salesforce.com, inc.
+#  All rights reserved.
+#  SPDX-License-Identifier: BSD-3-Clause
+#  For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+
+seed: 44
+output_dir: "./results/GQA/eval/sample_per_type_3/stable_diffusion_unit_tests_1.4_corr/5_unit_test/3program/run2"
+
+llm_engine: "vllm" # "hf" or "vllm"
+
+do_unit_test: True
+
+
+data:
+  task: VQA
+  dataset_name: GQA
+  dataset_args:
+    annotation_file: ./my_datasets/annotation_files/GQA/balanced_val_annotation.json
+    image_root: ${oc.env:GQA_IMAGE_PATH, /export/share/datasets/vision/GQA}
+    sample_ids_file: null
+    num_samples: -1
+    sample_per_type: 3
+  
+train:
+  train_prompt_file: ./prompts/train/virep_prompt.prompt
+  num_improve_steps: 1
+  batch_size: 2
+  train_max_iters: 10
+  train_kwargs:
+    unit_test_reward: 'all'
+    threshold: 0.7
+    warmup_ratio: 0.1
+    max_grad_norm: 0.3
+    lr_scheduler_type: 'linear'
+    learning_rate: 2e-4
+    lora_config:
+      r: 16
+      lora_alpha: 32
+      lora_dropout: 0.05
+      bias: 'none'
+      target_modules: [
+        "k_proj",
+        "v_proj",
+        "q_proj",
+        "o_proj"
+        ]
+
+
+visual_program_generator:
+  model_name: codellama/CodeLlama-7b-Python-hf
+  half: True
+  model_kwargs:
+    load_in_kbit: True
+    kbit: 4
+  generation:
+    prompt_file: ./prompts/program_generation/virep_adapted.prompt
+    in_context_examples_file: prompts/program_generation/in_context_examples/viper_GQA_examples.json
+    correction_prompt_file: ./prompts/program_correction/virep_adapted.prompt
+    num_in_context_examples: 4
+    batch_size: 2
+    generation_kwargs:
+      top_p: 0.9
+      temperature: 1.0
+      max_new_tokens: 320
+      top_k: 0
+      num_beams: 1
+      do_sample: True
+      num_return_sequences: 3 # num programs to generate
+
+unit_test_generation:
+  model_name: meta-llama/Meta-Llama-3-8B-Instruct
+  half: True
+  use_program: False
+  model_kwargs:
+    load_in_kbit: False
+    kbit: 4
+  generation:
+    prompt_file: ./prompts/unit_test_generation/unit_test_system.prompt
+    in_context_examples_file: prompts/unit_test_generation/gqa/unit_test_in_context_examples_diffusion.prompt
+    default_parameters: True
+    batch_size: 4
+    generation_kwargs:
+      top_p: 0.9
+      temperature: 0.7
+      max_new_tokens: 512
+      top_k: 0
+      num_beams: 1
+      do_sample: True
+      num_return_sequences: 3
+
+image_generation:
+  return_image: False 
+  image_scorer: False 
+  image_source: 'diffusion' # web, cc12m, diffusion
+  top_k: 1
+  return_k: 1
+  reranking_model_name: 'all-MiniLM-L6-v2' # 'ViT-L/14@336px'
+  search_by: 'text'
+  reprompt_with_description: False
+  guidance_scale: 16.0
+  num_inference_steps: 50
+  image_batch_size: 32
+  diffusion_model_name: CompVis/stable-diffusion-v1-4 # stabilityai/stable-diffusion-xl-base-1.0
+  model_name: meta-llama/Meta-Llama-3-8B-Instruct
+  half: True
+  generation:
+    prompt_file: ./prompts/lm_grounded_diffusion/system_prompt.prompt
+    in_context_examples_file: ./prompts/lm_grounded_diffusion/in_context_prompt.prompt
+    batch_size: 4
+    generation_kwargs:
+      top_p: 0.9
+      temperature: 1.0
+      max_new_tokens: 320
+      top_k: 0
+      num_beams: 1
+      do_sample: True
+      num_return_sequences: 5
+
+
+unit_test_sampling:
+  strategy: 'random' # 'coverage_by_answer', 'coverage', 'random', 'answer_only'
+  model_name: 'all-MiniLM-L6-v2'
+  filter_long_answers: True
+  num_unit_tests: 5
+
+
+execution:
+  pass_threshold: 0.7
+  feedback_max_iters: 1
+  image_agg: 'max' #max,mean
+  code_agg: 'single' # single, vote 
+  use_fixed_code_when_low_confidence: False
+  synonym_checker: False
+  error_penalty: 
+    syntax: 0.0
+    runtime: 0.0

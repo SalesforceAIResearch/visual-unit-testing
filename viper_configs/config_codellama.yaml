@@ -1,0 +1,7 @@
+# Adapted from: https://github.com/cvlab-columbia/viper
+codex:
+    model: codellama
+    codellama_model_name: codellama/CodeLlama-7b-Instruct-hf
+load_models:
+    codex: False
+    codellama: False

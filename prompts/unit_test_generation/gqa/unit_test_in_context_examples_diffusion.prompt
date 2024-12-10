@@ -1,0 +1,43 @@
+Query: Is there a cat or dog in the image?
+Tests:
+1. Image Caption: "A grey tabby cat peacefully napping on a plush sofa" Answer: yes
+2. Image Caption: "A lively golden retriever bounding across a grassy field in the park" Answer: yes
+3. Image Caption: "Twin Siamese cats playfully swatting at a bright yellow ball" Answer: yes
+4. Image Caption: "A cluster of wild horses trotting along the sandy shores of a sunlit beach" Answer: no
+5. Image Caption: "An orange cat and a black Labrador playfully tugging on a rope toy" Answer: yes
+6. Image Caption: "A modern living room featuring sleek furniture and devoid of any pets" Answer: no
+
+Query: Is there a red truck or bus in the image?
+Tests:
+1. Image Caption: "A vibrant red Ford pickup parked beside a country road" Answer: yes
+2. Image Caption: "A red double-decker bus navigating through a busy downtown street" Answer: yes
+3. Image Caption: "A large blue semi-truck cruising down an interstate highway" Answer: no
+4. Image Caption: "A quiet suburban street devoid of any large vehicles like buses or trucks" Answer: no
+5. Image Caption: "A shiny red Ferrari speeding on a professional race track" Answer: no
+6. Image Caption: "An array of red delivery trucks lined up in a distribution center parking lot" Answer: yes
+7. Image Caption: "Several bright yellow school buses parked in a row at a local school" Answer: no
+
+Query: What color is the largest car in the image?
+Tests:
+1. Image Caption: "A large blue Ford pickup truck driving on a busy highway" Answer: blue
+2. Image Caption: "A city street empty of any large vehicles like buses or trucks" Answer: no answer
+3. Image Caption: "A row of green food trucks serving lunch in an urban park" Answer: green
+4. Image Caption: "A scene with a green public bus next to a smaller blue pickup at an intersection" Answer: green
+
+Query: Is the vase to the left or right of the center?
+Tests:
+1. Image Caption: "A delicate porcelain vase positioned on the right end of a mahogany dining table" Answer: right
+2. Image Caption: "A tall glass vase sitting on the left side of a neatly made bed in a sunlit room" Answer: left
+3. Image Caption: "A ceramic vase centrally placed on a round table surrounded by chairs" Answer: center
+
+Query: What is the highest object in the image?
+Tests:
+1. Image Caption: "A massive skyscraper dominating the skyline among lower city buildings" Answer: skyscraper
+2. Image Caption: "A lone oak tree surpassing the height of the cottage it stands next to" Answer: tree
+3. Image Caption: "Colorful balloons drifting above the treetops in a clear sky" Answer: balloons
+4. Image Caption: "A commercial jet flying high above the city's tallest skyscrapers" Answer: plane
+5. Image Caption: "A majestic eagle soaring high above a vast canyon landscape" Answer: eagle
+6. Image Caption: "A figure standing on the peak of a grassy hill under a blue sky" Answer: person
+
+Query: INSERT_QUERY_HERE
+Tests:

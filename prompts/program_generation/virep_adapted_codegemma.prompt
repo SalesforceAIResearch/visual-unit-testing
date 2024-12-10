@@ -1,0 +1,308 @@
+<bos><start_of_turn>import math 
+
+class ImagePatch:
+    pass
+
+    def __init__(
+        self, image, left=None, lower=None, right=None, upper=None, category=None
+    ):
+        """Initializes an ImagePatch object by cropping the image at the given
+        coordinates and stores the coordinates as attributes. If no coordinates are
+        provided, the image is left unmodified, and the coordinates are set to the
+        dimensions of the image.
+        Parameters
+        -------
+        image : array_like
+            An array-like of the original image.
+        left, lower, right, upper : int
+            An int describing the position of the (left/lower/right/upper) border of the
+             crop's bounding box in the original image.
+        category : str
+            A string describing the name of the object in the image."""
+
+        # Rectangles are represented as 4-tuples, (x1, y1, x2, y2),
+        # with the upper left corner given first. The coordinate
+        # system is assumed to have its origin in the upper left corner, so
+        # upper must be less than lower and left must be less than right.
+
+        self.left = left if left is not None else 0
+        self.lower = lower if lower is not None else image.height
+        self.right = right if right is not None else image.width
+        self.upper = upper if upper is not None else 0
+        self.cropped_image = image[:, image.shape[1]-upper:image.shape[1]-lower, left:right]
+        self.horizontal_center = (self.left + self.right) / 2
+        self.vertical_center = (self.upper + self.lower) / 2
+        self.category = category
+
+    def from_bounding_box(cls, image, bounding_box):
+        """Initializes an ImagePatch object by cropping the image at the given
+        coordinates and stores the coordinates as attributes.
+        Parameters
+        -------
+        image : array_like
+            An array-like of the original image.
+        bounding_box : dict
+            A dictionary like {"box": [left, lower, right, upper], "category": str}."""
+        pass
+
+    @property
+    def area(self):
+        """
+        Returns the area of the bounding box.
+
+        Examples
+        --------
+        >>> # What color is the largest foo?
+        >>> def execute_command(image) -> str:
+        >>>     image_patch = ImagePatch(image)
+        >>>     foo_patches = image_patch.find("foo")
+        >>>     foo_patches.sort(key=lambda x: x.area)
+        >>>     largest_foo_patch = foo_patches[-1]
+        >>>     return largest_foo_patch.simple_query("What is the color?")
+        """
+        pass
+
+    def find(self, object_name):
+        """Returns a list of ImagePatch objects matching object_name contained in the
+        crop if any are found.
+        Otherwise, returns an empty list.
+        Parameters
+        ----------
+        object_name : str
+            the name of the object to be found
+
+        Returns
+        -------
+        List[ImagePatch]
+            a list of ImagePatch objects matching object_name contained in the crop
+
+        Examples
+        --------
+        >>> # return the foo
+        >>> def execute_command(image) -> List[ImagePatch]:
+        >>>     image_patch = ImagePatch(image)
+        >>>     foo_patches = image_patch.find("foo")
+        >>>     return foo_patches
+        """
+        pass
+
+    def exists(self, object_name):
+        """Returns True if the object specified by object_name is found in the image,
+        and False otherwise.
+        Parameters
+        -------
+        object_name : str
+            A string describing the name of the object to be found in the image.
+
+        Examples
+        -------
+        >>> # Are there both foos and garply bars in the photo?
+        >>> def execute_command(image)->str:
+        >>>     image_patch = ImagePatch(image)
+        >>>     is_foo = image_patch.exists("foo")
+        >>>     is_garply_bar = image_patch.exists("garply bar")
+        >>>     return bool_to_yesno(is_foo and is_garply_bar)
+        """
+        pass
+
+    def verify_property(self, object_name, visual_property):
+        """Returns True if the object possesses the visual property, and False otherwise.
+        Differs from 'exists' in that it presupposes the existence of the object 
+        specified by object_name, instead checking whether the object possesses
+        the property.
+        Parameters
+        -------
+        object_name : str
+            A string describing the name of the object to be found in the image.
+        visual_property : str
+            String describing the simple visual property (e.g., color, shape, material)
+            to be checked.
+
+        Examples
+        -------
+        >>> # Do the letters have blue color?
+        >>> def execute_command(image) -> str:
+        >>>     image_patch = ImagePatch(image)
+        >>>     letters_patches = image_patch.find("letters")
+        >>>     # Question assumes only one letter patch
+        >>>     return bool_to_yesno(letters_patches[0].verify_property("letters", "blue"))
+        """
+        pass
+
+    def simple_query(self, question):
+        """Returns the answer to a basic question asked about the image.
+        If no question is provided, returns the answer to "What is this?".
+        The questions are about basic perception, and are not meant to be used for
+        complex reasoning or external knowledge.
+        Parameters
+        -------
+        question : str
+            A string describing the question to be asked.
+
+        Examples
+        -------
+
+        >>> # Which kind of baz is not fredding?
+        >>> def execute_command(image) -> str:
+        >>>     image_patch = ImagePatch(image)
+        >>>     baz_patches = image_patch.find("baz")
+        >>>     for baz_patch in baz_patches:
+        >>>         if not baz_patch.verify_property("baz", "fredding"):
+        >>>             return baz_patch.simple_query("What is this baz?")
+
+        >>> # What color is the foo?
+        >>> def execute_command(image) -> str:
+        >>>     image_patch = ImagePatch(image)
+        >>>     foo_patches = image_patch.find("foo")
+        >>>     foo_patch = foo_patches[0]
+        >>>     return foo_patch.simple_query("What is the color?")
+
+        >>> # Is the second bar from the left quuxy?
+        >>> def execute_command(image) -> str:
+        >>>     image_patch = ImagePatch(image)
+        >>>     bar_patches = image_patch.find("bar")
+        >>>     bar_patches.sort(key=lambda x: x.horizontal_center)
+        >>>     bar_patch = bar_patches[1]
+        >>>     return bar_patch.simple_query("Is the bar quuxy?")
+        """
+        pass
+
+    def crop_left_of_bbox(self, left, lower, right, upper):
+        """Returns an ImagePatch object representing the area to the left of the given
+        bounding box coordinates.
+
+        Parameters
+        ----------
+        left, lower, right, upper : int
+            The coordinates of the bounding box.
+
+        Returns
+        -------
+        ImagePatch
+            An ImagePatch object representing the cropped area.
+
+        Examples
+        --------
+        >>> # Is the bar to the left of the foo quuxy?
+        >>> def execute_command(image) -> str:
+        >>>     image_patch = ImagePatch(image)
+        >>>     foo_patch = image_patch.find("foo")[0]
+        >>>     left_of_foo_patch = image_patch.crop_left_of_bbox(
+        >>>         foo_patch.left, foo_patch.lower, foo_patch.right, foo_patch.upper
+        >>>     )
+        >>>     return bool_to_yesno(left_of_foo_patch.verify_property("bar", "quuxy"))
+        """
+        pass
+
+    def crop_right_of_bbox(self, left, lower, right, upper):
+        """Returns an ImagePatch object representing the area to the right of the given
+        bounding box coordinates.
+
+        Parameters
+        ----------
+        left, lower, right, upper : int
+            The coordinates of the bounding box.
+
+        Returns
+        -------
+        ImagePatch
+            An ImagePatch object representing the cropped area.
+
+        Examples
+        --------
+        >>> # Is the bar to the right of the foo quuxy?
+        >>> def execute_command(image) -> str:
+        >>>     image_patch = ImagePatch(image)
+        >>>     foo_patch = image_patch.find("foo")[0]
+        >>>     right_of_foo_patch = image_patch.crop_right_of_bbox(
+        >>>         foo_patch.left, foo_patch.lower, foo_patch.right, foo_patch.upper
+        >>>     )
+        >>>     return bool_to_yesno(right_of_foo_patch.verify_property("bar", "quuxy"))
+        """
+        pass
+
+    def crop_below_bbox(self, left, lower, right, upper):
+        """Returns an ImagePatch object representing the area below the given
+        bounding box coordinates.
+
+        Parameters
+        ----------
+        left, lower, right, upper : int
+            The coordinates of the bounding box.
+
+        Returns
+        -------
+        ImagePatch
+            An ImagePatch object representing the cropped area.
+
+        Examples
+        --------
+        >>> # Is the bar below the foo quuxy?
+        >>> def execute_command(image) -> str:
+        >>>     image_patch = ImagePatch(image)
+        >>>     foo_patch = image_patch.find("foo")[0]
+        >>>     below_foo_patch = image_patch.crop_below_bbox(
+        >>>         foo_patch.left, foo_patch.lower, foo_patch.right, foo_patch.upper
+        >>>     )
+        >>>     return bool_to_yesno(below_foo_patch.verify_property("bar", "quuxy"))
+        """
+        pass
+
+    def crop_above_bbox(self, left, lower, right, upper):
+        """Returns an ImagePatch object representing the area above the given
+        bounding box coordinates.
+
+        Parameters
+        ----------
+        left, lower, right, upper : int
+            The coordinates of the bounding box.
+
+        Returns
+        -------
+        ImagePatch
+            An ImagePatch object representing the cropped area.
+
+        Examples
+        --------
+        >>> # Is the bar above the foo quuxy?
+        >>> def execute_command(image) -> str:
+        >>>     image_patch = ImagePatch(image)
+        >>>     foo_patch = image_patch.find("foo")[0]
+        >>>     above_foo_patch = image_patch.crop_above_bbox(
+        >>>         foo_patch.left, foo_patch.lower, foo_patch.right, foo_patch.upper
+        >>>     )
+        >>>     return bool_to_yesno(above_foo_patch.verify_property("bar", "quuxy"))
+        """
+        pass
+
+
+def best_image_match(list_patches: List[ImagePatch], content: List[str], return_index=False) -> Union[ImagePatch, int]:
+    """Returns the patch most likely to contain the content.
+    Parameters
+    ----------
+    list_patches : List[ImagePatch]
+    content : List[str]
+        the object of interest
+    return_index : bool
+        if True, returns the index of the patch most likely to contain the object
+
+    Returns
+    -------
+    int
+        Patch most likely to contain the object
+    """
+    return best_image_match(list_patches, content, return_index)
+
+def bool_to_yesno(bool_answer: bool) -> str:
+    return "yes" if bool_answer else "no"
+
+Write a function using Python and the ImagePatch class (above) that could be executed to provide an answer to the query.
+
+Consider the following guidelines:
+- Use base Python (comparison, sorting) for basic logical operations, left/right/up/down, math, etc.
+
+# Examples of how to use the API
+INSERT_CONTEXT_HERE
+
+Query: INSERT_QUERY_HERE
+Program:<end_of_turn>

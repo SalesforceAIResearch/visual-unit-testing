@@ -1,0 +1,22 @@
+[
+    {
+        "question": "Is there a red car is in foreground, and a blue car in the background?",
+        "code": "def execute_command(image) -> str:\n    image_patch = ImagePatch(image)\n    red_car_patches = image_patch.find(\"red car\")\n    blue_car_patches = image_patch.find(\"blue car\")\n    red_car_in_foreground = any(patch.vertical_center > image_patch.vertical_center for patch in red_car_patches)\n    blue_car_in_background = any(patch.vertical_center < image_patch.vertical_center for patch in blue_car_patches)\n    return bool_to_yesno(red_car_in_foreground and blue_car_in_background)"
+    },
+    {
+        "question": "Is there a table in the center, and a chair to the left of the table.?",
+        "code": "def execute_command(image) -> str:\n    image_patch = ImagePatch(image)\n    table_patches = image_patch.find(\"table\")\n    chair_patches = image_patch.find(\"chair\")\n    table_in_center = any(\n        image_patch.left < patch.horizontal_center < image_patch.right and\n        image_patch.upper > patch.vertical_center > image_patch.lower\n        for patch in table_patches\n    )\n    chair_to_left_of_table = all(\n        any(chair_patch.horizontal_center < table_patch.horizontal_center for table_patch in table_patches)\n        for chair_patch in chair_patches\n    )\n    return bool_to_yesno(table_in_center and chair_to_left_of_table)"
+    },
+    {
+        "question": "Is there a dog in the lower right corner, and a cat in the upper left corner?",
+        "code": "def execute_command(image) -> str:\n    image_patch = ImagePatch(image)\n    dog_patches = image_patch.find(\"dog\")\n    cat_patches = image_patch.find(\"cat\")\n    dog_in_lower_right = any(\n        patch.horizontal_center > image_patch.horizontal_center and\n        patch.vertical_center < image_patch.vertical_center\n        for patch in dog_patches\n    )\n    cat_in_upper_left = any(\n        patch.horizontal_center < image_patch.horizontal_center and\n        patch.vertical_center > image_patch.vertical_center\n        for patch in cat_patches\n    )\n    return bool_to_yesno(dog_in_lower_right and cat_in_upper_left)"
+    },
+    {
+        "question": "Is there a book on the desk, and a lamp beside the book?",
+        "code": "def execute_command(image) -> str:\n    image_patch = ImagePatch(image)\n    book_patches = image_patch.find(\"book\")\n    lamp_patches = image_patch.find(\"lamp\")\n    book_on_desk = any(book_patch.verify_property(\"book\", \"on desk\") for book_patch in book_patches)\n    lamp_beside_book = any(\n        any(lamp_patch.verify_property(\"lamp\", \"beside book\") for lamp_patch in lamp_patches)\n        for book_patch in book_patches\n    )\n    return bool_to_yesno(book_on_desk and lamp_beside_book)"
+    },
+    {
+        "question": "Is there a painting on the wall, and a sofa in front of the wall?",
+        "code": "def execute_command(image) -> str:\n    image_patch = ImagePatch(image)\n    painting_patches = image_patch.find(\"painting\")\n    sofa_patches = image_patch.find(\"sofa\")\n    painting_on_wall = any(painting_patch.verify_property(\"painting\", \"on wall\") for painting_patch in painting_patches)\n    sofa_in_front_of_wall = any(\n        any(sofa_patch.verify_property(\"sofa\", \"in front of wall\") for sofa_patch in sofa_patches)\n        for painting_patch in painting_patches\n    )\n    return bool_to_yesno(painting_on_wall and sofa_in_front_of_wall)"
+    }
+]

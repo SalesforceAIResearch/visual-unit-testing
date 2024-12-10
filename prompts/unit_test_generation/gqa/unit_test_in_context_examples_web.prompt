@@ -1,0 +1,47 @@
+Query: Is there a cat or dog in the image?
+Tests:
+1. Image Caption: "A cat sleeping on a couch" Answer: yes
+2. Image Caption: "A dog running in the park" Answer: yes
+3. Image Caption: "Two cats playing with a ball" Answer: yes
+4. Image Caption: "A group of horses at a beach" Answer: no
+5. Image Caption: "A cat and a dog playing together" Answer: yes
+6. Image Caption: "An empty room with no animals" Answer: no
+
+Query: Is there a red truck or bus in the image?
+Tests:
+1. Image Caption: "Red Ford pickup truck" Answer: yes
+2. Image Caption: "Red city bus downtown" Answer: yes
+3. Image Caption: "Blue semi-truck on highway" Answer: yes
+4. Image Caption: "Street with no buses or trucks" Answer: no
+5. Image Caption: "Red sports car on race track" Answer: no
+6. Image Caption: "Fleet of red delivery trucks" Answer: yes
+7. Image Caption: "Yellow buses lined up at school" Answer: no
+
+Query: What color is the largest car in the image?
+Tests:
+1. Image Caption: "Blue Ford truck on highway" Answer: blue
+2. Image Caption: "Street with no buses or trucks" Answer: no answer
+3. Image Caption: "Line of green food trucks" Answer: green
+4. Image Caption: "Green public bus and blue pickup truck" Answer: green
+
+Query: Is the vase to the left or right of the center?
+Tests:
+1. Image Caption: "A vase on the right side of a table" Answer: right
+2. Image Caption: "A vase on the left side of a bed" Answer: left
+3. Image Caption: "A vase in the center side of a table" Answer: center
+  
+Query: What is the highest object in the image?
+Tests:
+1. Image Caption: "Tall skyscraper towering over other buildings" Answer: skyscraper
+2. Image Caption: "A tree that stands taller than the house next to it" Answer: tree
+3. Image Caption: "Multiple balloons floating higher than trees" Answer: balloons
+4. Image Caption: "A plane flying higher than the skyscrapers" Answer: "plane"
+5. Image Caption: "An eagle soaring above the canyon" Answer: "eagle"
+6. Image Caption: "A person standing on a hill" Answer: "person"
+
+Create test cases for the specified query using the format provided in the examples. 
+The test cases should consist of image captions and answers to the query.
+The answers should be consice, limited to a single word. 
+
+Query: INSERT_QUERY_HERE
+Tests:

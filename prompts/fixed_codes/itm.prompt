@@ -1,0 +1,8 @@
+
+    image_patch = ImagePatch(image)
+
+    text = question.replace('"', '').split("text=")[-1].lower().strip()
+    if image_patch._detect(text, .7):
+        return 'yes'
+    else:
+        return 'no'

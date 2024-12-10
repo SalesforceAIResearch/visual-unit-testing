@@ -1,0 +1,18 @@
+[
+    {
+        "question": "Verify image matches text=\"The apple is on top of the book, and the pen is beside the book.\"",
+        "code": "def execute_command(image) -> str:\n    image_patch = ImagePatch(image)\n    apple_patches = image_patch.find(\"apple\")\n    book_patches = image_patch.find(\"book\")\n    pen_patches = image_patch.find(\"pen\")\n\n    apple_on_book = any(\n        apple_patch.lower >= book_patch.upper and\n        book_patch.left <= apple_patch.horizontal_center <= book_patch.right\n        for apple_patch in apple_patches for book_patch in book_patches\n    )\n\n    pen_beside_book = any(\n        abs(pen_patch.horizontal_center - book_patch.horizontal_center) < 50 and\n        abs(pen_patch.vertical_center - book_patch.vertical_center) < 100\n        for pen_patch in pen_patches for book_patch in book_patches\n    )\n\n    return bool_to_yesno(apple_on_book and pen_beside_book)"
+    },
+    {
+        "question": "Verify image matches text=\"A man is riding a bicycle, and a dog is running beside him.\"",
+        "code": "def execute_command(image) -> str:\n    image_patch = ImagePatch(image)\n    man_patches = image_patch.find(\"man\")\n    bicycle_patches = image_patch.find(\"bicycle\")\n    dog_patches = image_patch.find(\"dog\")\n\n    man_on_bicycle = any(\n        man_patch.left <= bicycle_patch.right and man_patch.right >= bicycle_patch.left and\n        man_patch.lower <= bicycle_patch.upper and man_patch.upper >= bicycle_patch.lower\n        for man_patch in man_patches for bicycle_patch in bicycle_patches\n    )\n\n    dog_beside_man = any(\n        abs(dog_patch.horizontal_center - man_patch.horizontal_center) < 100 and\n        abs(dog_patch.vertical_center - man_patch.vertical_center) < 50\n        for dog_patch in dog_patches for man_patch in man_patches\n    )\n\n    return bool_to_yesno(man_on_bicycle and dog_beside_man)"
+    },
+    {
+        "question": "Verify image matches text=\"The bird is flying above the tree, and a cat is sitting under the tree.\"",
+        "code": "def execute_command(image) -> str:\n    image_patch = ImagePatch(image)\n    bird_patches = image_patch.find(\"bird\")\n    tree_patches = image_patch.find(\"tree\")\n    cat_patches = image_patch.find(\"cat\")\n\n    bird_above_tree = any(\n        bird_patch.lower >= tree_patch.upper and\n        abs(bird_patch.horizontal_center - tree_patch.horizontal_center) < 50\n        for bird_patch in bird_patches for tree_patch in tree_patches\n    )\n\n    cat_under_tree = any(\n        cat_patch.upper <= tree_patch.lower and\n        abs(cat_patch.horizontal_center - tree_patch.horizontal_center) < 50\n        for cat_patch in cat_patches for tree_patch in tree_patches\n    )\n\n    return bool_to_yesno(bird_above_tree and cat_under_tree)"
+    },
+    {
+        "question": "Verify image matches text=\"An airplane is flying in the sky, and birds are flying below it.\"",
+        "code": "def execute_command(image) -> str:\n    image_patch = ImagePatch(image)\n    airplane_patches = image_patch.find(\"airplane\")\n    bird_patches = image_patch.find(\"bird\")\n\n    airplane_in_sky = any(\n        airplane_patch.vertical_center > image_patch.height * 0.6\n        for airplane_patch in airplane_patches\n    )\n\n    birds_below_airplane = any(\n        bird_patch.upper <= airplane_patch.lower\n        for bird_patch in bird_patches for airplane_patch in airplane_patches\n    )\n\n    return bool_to_yesno(airplane_in_sky and birds_below_airplane)"
+    }
+]

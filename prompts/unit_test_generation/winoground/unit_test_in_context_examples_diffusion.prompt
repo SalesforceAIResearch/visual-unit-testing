@@ -1,0 +1,43 @@
+Query: Is the drawing of a tree on the hill, and a river that flows at the bottom of the hill?
+Tests:
+1. Image Caption: "A solitary tree stands atop a gentle hill, with a flowing river winding below it." Answer: yes
+2. Image Caption: "A tree on a grassy hill under a clear sky." Answer: no
+3. Image Caption: "A river meandering through a dense forest of tall trees." Answer: no
+4. Image Caption: "A panoramic view of rolling hills in the desert, with a river at the bottom." Answer: no
+5. Image Caption: "A vast plain with a river running through fields of wildflowers." Answer: no
+6. Image Caption: Image Caption: "A hill with multiple trees and a river flowing nearby." Answer: yes
+
+Query: Is the drawing of an airplane flying in the sky, and birds flying below it?
+Tests:
+1. Image Caption:  "An airplane soars through the sky, with a flock of birds flying beneath it." Answer: yes
+2. Image Caption: "Birds flying over a tranquil lake under a clear sky." Answer: no
+3. Image Caption: "An airplane performing aerobatic maneuvers, with birds flying above it." Answer: no
+4. Image Caption: "An airplane floating in the sea with birds flying above it." Answer: Yes
+5. Image Caption: "An airplane in a clear sky" Answer: no
+
+Query: Is the drawing of a girl holding an umbrella in the rain?
+Tests:
+1. Image Caption: "A girl holding an umbrella walks through a rainy street." Answer: yes
+2. Image Caption: "A girl holds an umbrella under a bright sun in the park." Answer: no
+3. Image Caption: "A girl stands in the rain wearing a colorful raincoat and holding flowers." Answer: no
+4. Image Caption: "A girl walks her dog while holding an umbrella on a rainy day." Answer: yes
+
+Query: Is the drawing of a person sitting at a desk with a computer monitor in front of them?
+Tests:
+1. Image Caption: "A person sitting at a desk, writing in a notebook with a lamp beside them." Answer: no
+2. Image Caption: "Someone sitting at a desk cluttered with papers and a computer monitor." Answer: yes
+3. Image Caption: "Someone sitting at a desk cluttered with papers and a computer monitor." Answer: yes
+3. Image Caption: "A person with a big computer screen in the background" Answer: no
+
+
+Query: Is the drawing of a man riding a bicycle, and a dog running beside him?
+Tests:
+1. Image Caption: "A man cycling alone on a mountain trail surrounded by trees." Answer: no
+2. Image Caption: "A man rides a bicycle along the beach, his dog running beside him." Answer: yes
+3. Image Caption: "A bicycle and a dog" Answer: no
+4. Image Caption: "A dog next to a car" Answer: no
+5. Image Caption: "A man walking his dog" Answer: no
+6. Image Caption: "A man rides a bicycle down a sunny street with a dog running beside him." Answer: yes
+
+Query: INSERT_QUERY_HERE
+Tests:

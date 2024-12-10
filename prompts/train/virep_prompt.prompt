@@ -1,0 +1,7 @@
+Write a function using Python and the ImagePatch class (above) that could be executed to provide an answer to the query.
+
+Consider the following guidelines:
+- Use base Python (comparison, sorting) for basic logical operations, left/right/up/down, math, etc.
+
+Query: INSERT_QUERY_HERE
+Program:
