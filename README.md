@@ -276,7 +276,7 @@ This release is for research purposes only in support of an academic paper. Our 
 ## Disclaimer
 * Users need to make their own assessment regarding any obligations or responsibilities under the corresponding licenses or terms and conditions pertaining to the original datasets and data. This repository is being released for research purposes only. 
 * The Meta WinoGround dataset is linked out to and not included in the repo. 
-* The GQA dataset is released by Standford and the origin of the data is not described - the CC-BY 4.0 logo is simply listed at the bottom of the dataset download page. The dataset is based on the image-text pairs of COCO (https://cocodataset.org/#termsofuse), which follows flickr TOU (https://www.flickr.com/creativecommons/) having a variety of licenses.
+* The GQA dataset is released by Stanford and the origin of the data is not described - the CC-BY 4.0 logo is simply listed at the bottom of the dataset download page. The dataset is based on the image-text pairs of COCO (https://cocodataset.org/#termsofuse), which follows flickr TOU (https://www.flickr.com/creativecommons/) having a variety of licenses.
 
 
 
